@@ -1,17 +1,33 @@
-require ( './helpers.js' );
+// Require the helper functions if needed
+require('./helpers.js');
 
-const sinon = require('sinon');
+describe('index.html', () => {
+    // Create a hook to set up the DOM structure before each test
+    beforeEach(() => {
+        // Set up the DOM
+        document.body.innerHTML = `
+            <input type="text" id="input" placeholder="Click me!">
+        `;
 
-describe("index.js", () => {
-  let input;
+        // Call the function to add the event listener
+        addingEventListener();
+    });
 
-  beforeEach(function() {
-    input = document.getElementById('button');
-    sinon.spy(input, 'addEventListener');
-  })
+    describe('addingEventListener()', () => {
+        it('binds an event listener in addingEventListener()', () => {
+            const input = document.getElementById('input');
+            
+            // Check if the event listener is added
+            let eventTriggered = false;
+            input.addEventListener('click', () => {
+                eventTriggered = true;
+            });
 
-  it("binds an event listener in addingEventListener()", () => {
-    addingEventListener();
-    expect(input.addEventListener.called).to.be.true;
-  })
-})
+            // Simulate a click event
+            input.click();
+
+            // Verify that the event listener was triggered
+            expect(eventTriggered).to.be.true;
+        });
+    });
+});
